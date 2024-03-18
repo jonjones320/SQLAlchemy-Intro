@@ -8,6 +8,12 @@
 
 <img src=user.url  class="user_img" alt="User's profile picture">
 
+<ul name="users_posts">
+    {% for post in user.post.title%}
+        <li> {{ post }} </li>
+    {% endfor %}
+</ul>
+
 <form action="/users/{{ user.id }}/edit">
     <button name="editUserBttn">Edit</button>
 </form>

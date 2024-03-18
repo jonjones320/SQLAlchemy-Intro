@@ -1,7 +1,8 @@
 """Blogly application."""
 
 from flask import Flask, render_template, redirect, request
-from models import db, connect_db, User
+from models import db, connect_db, User, Post
+import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///blogly'
@@ -90,5 +91,60 @@ def delete_user(user_id):
 
     User.query.filter_by(id=user_id).delete()
     db.session.commit()
+
+    return redirect("/users")
+
+################################################################################################
+
+@app.route("/users/[user-id]/posts/new")
+def create_post(user_id):
+    """Show form to add a post for that user"""
+    user = User.query.filter(User.id == user_id).all()
+
+    return render_template("create-post.html", user=user)
+
+
+@app.route("/users/[user-id]/posts/new", methods=["POST"])
+def add_post(user_id):
+    """Handle create-post form; Add post and redirect to the user detail page"""
+    title = request.form["title"]
+    content = request.form["content"]
+    created_at = db.Column(db.DateTime, server_default=datetime.datetime.utcnow)
+
+    post = Post(title=title, content=content, created_at=created_at, user_id=user_id)
+    db.session.add(post)
+    db.session.commit()
+
+    return redirect("/users/<int:user_id>")
+
+
+@app.route("/posts/[post-id]")
+def view_post(post_id):
+    """Show a post. Show buttons to edit and delete the post"""
+
+    post = Post.query.get_or_404(post_id)
+
+    return render_template("view-post.html", post=post)
+
+
+@app.route("/posts/[post-id]/edit")
+def edit_post(post_id):
+    """Show form to edit a post, and to cancel (back to user page)"""
+
+    post = Post.query.get_or_404(post_id)
+
+    return render_template("edit-post.html", post=post)
+
+
+@app.route("/posts/[post-id]/edit", methods=["POST"])
+def update_post():
+    """Handle editing of a post. Redirect back to the post view"""
+
+    return redirect("/posts/[post-id]")
+
+
+@app.route("/posts/[post-id]/delete", methods=["POST"])
+def delete_post():
+    """Delete the post"""
 
     return redirect("/users")

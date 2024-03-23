@@ -6,16 +6,25 @@
 
     <h1>Create Post for {{ user.first_name }} {{ user.last_name }}</h1>
 
-    <form action="/users/[user-id]/posts/new" method="POST">
+    <form action="/users/{{ user.id }}/posts/new" method="POST">
         <label for="title">Title
             <input type="text" name="title" placeholder="Enter Title">
         </label>
         <label for="content">Post
             <input type="text" name="content" placeholder="Create your post">
         </label>
+
+        <div class="tags_checkbox">
+        {% for tag in tags %}
+            <input type="checkbox" id="tag_checkbox">
+            <label for="tag_checkbox">{{ tag.name }}</label>
+        {% endfor %}
+        </div>
+
         <button class="button">Submit</button>
     </form>
-    <form action="/users/{{user.id}}">
+
+    <form action="/users/{{ user.id }}">
         <button>Cancel</button>
     </form>
 

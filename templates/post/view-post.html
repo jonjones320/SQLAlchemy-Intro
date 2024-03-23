@@ -8,17 +8,17 @@
 
 <div name="content">{{ post.content }}</div>
 
-<div name="author"><i>By {{ post.User.first_name }}{{ post.User.last_name }}</i></div>
+<div name="author"><i>By {{ post.user.first_name }}{{ post.user.last_name }}</i></div>
 
-<form action="/posts/{{ post-id }}/edit">
+<form action="/posts/{{ post.id }}/edit">
     <button name="editPostBttn">Edit</button>
 </form>
 
-<form action="/users/{{ user.id }}">
+<form action="/users/{{ post.user.id }}">
     <button>Cancel</button>
 </form>
 
-<form action="/posts/{{ post-id }}/delete" method="POST">
+<form action="/posts/{{ post.id }}/delete" method="POST">
     <button name="deletePostButton">Delete</button>
 </form>
 

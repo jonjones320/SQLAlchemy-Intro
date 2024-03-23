@@ -8,12 +8,16 @@
 
     <ul name="userList">
         {% for user in users %}
-        <li><a href="users/{{user.id}}">{{ user.first_name }} {{ user.last_name }}</a></li>
+        <li><a href="users/{{ user.id }}">{{ user.first_name }} {{ user.last_name }}</a></li>
         {% endfor %}
     </ul>
 
     <form action="/users/new">
         <button name="addUserBttn">Add User</button>
+    </form>
+    
+    <form action="/tags/new">
+        <button name="newTagBttn">New Tag</button>
     </form>
    
 {% endblock %}
